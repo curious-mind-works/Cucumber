@@ -1,0 +1,243 @@
+
+
+# 🔹 What is Cucumber?
+
+* **Cucumber** is a **BDD (Behavior Driven Development)** tool.
+* It allows writing test cases in **plain English** using **Gherkin language**.
+* Bridges gap between **technical & non-technical stakeholders**.
+
+---
+
+# 🔹 What is BDD?
+
+* BDD = Behavior Driven Development
+* Focuses on **application behavior** instead of implementation.
+* Uses **Given–When–Then** format.
+
+👉 Example:
+
+```gherkin
+Feature: Login functionality
+
+Scenario: Valid login
+  Given user is on login page
+  When user enters valid username and password
+  Then user should be redirected to homepage
+```
+
+---
+
+# 🔹 Gherkin Keywords (Important ⭐)
+
+| Keyword   | Purpose                |
+| --------- | ---------------------- |
+| Feature   | High-level requirement |
+| Scenario  | Test case              |
+| Given     | Pre-condition          |
+| When      | Action                 |
+| Then      | Expected result        |
+| And / But | Additional steps       |
+
+---
+
+# 🔹 Cucumber Architecture
+
+```
+Feature File  →  Step Definition  →  Test Runner  →  Automation Code
+```
+
+### 1. Feature File
+
+* Written in `.feature`
+* Contains scenarios in Gherkin
+
+### 2. Step Definition
+
+* Java methods mapped to steps
+
+```java
+@Given("user is on login page")
+public void user_on_login_page() {
+    driver.get("url");
+}
+```
+
+### 3. Test Runner
+
+* Uses JUnit/TestNG
+
+```java
+@RunWith(Cucumber.class)
+@CucumberOptions(
+  features="src/test/resources/features",
+  glue="stepDefinitions",
+  plugin={"pretty","html:target/report.html"}
+)
+```
+
+---
+
+# 🔹 Annotations (Very Important)
+
+| Annotation | Use                       |
+| ---------- | ------------------------- |
+| @Given     | Pre-condition             |
+| @When      | Action                    |
+| @Then      | Validation                |
+| @Before    | Runs before each scenario |
+| @After     | Runs after each scenario  |
+
+---
+
+# 🔹 Hooks in Cucumber
+
+* Used for setup & teardown
+
+```java
+@Before
+public void setup() {
+    driver = new ChromeDriver();
+}
+
+@After
+public void teardown() {
+    driver.quit();
+}
+```
+
+---
+
+# 🔹 Tags (Frequently Asked in Interview ⭐)
+
+* Used to **group scenarios**
+
+```gherkin
+@smoke
+Scenario: Login test
+```
+
+Run specific tags:
+
+```java
+@CucumberOptions(tags = "@smoke")
+```
+
+👉 Multiple tags:
+
+```java
+tags = "@smoke and not @regression"
+```
+
+---
+
+# 🔹 Data Driven Testing in Cucumber
+
+### 1. Data Table
+
+```gherkin
+When user enters credentials
+  | username | password |
+  | admin    | admin123 |
+```
+
+### 2. Scenario Outline
+
+```gherkin
+Scenario Outline: Login test
+  Given user is on login page
+  When user enters "<username>" and "<password>"
+  Then login should be "<result>"
+
+Examples:
+  | username | password | result |
+  | admin    | admin123 | success |
+  | user     | wrong    | fail    |
+```
+
+---
+
+# 🔹 Parameterization
+
+```java
+@When("user enters {string} and {string}")
+public void enter_credentials(String username, String password) {
+    // code
+}
+```
+
+---
+
+# 🔹 Page Object Model (POM) with Cucumber
+
+* Keeps code clean and maintainable
+* Separate:
+
+  * Feature file → behavior
+  * Step definition → mapping
+  * Page class → locators & actions
+
+---
+
+# 🔹 Cucumber Reports
+
+* Built using plugins:
+
+```java
+plugin = {"pretty", "html:target/cucumber-report"}
+```
+
+---
+
+# 🔹 Advantages
+
+✅ Easy to understand
+✅ Non-technical stakeholders can read
+✅ Improves collaboration
+✅ Reusable steps
+✅ Supports multiple languages
+
+---
+
+# 🔹 Disadvantages
+
+❌ Initial setup is complex
+❌ Requires good design for step reuse
+❌ Slower execution compared to pure TestNG
+
+---
+
+# 🔹 Common Interview Questions (Must Prepare ⭐)
+
+### 1. What is Cucumber?
+
+👉 BDD tool using Gherkin to write test cases.
+
+### 2. Difference between TestNG & Cucumber?
+
+* TestNG → Code-based
+* Cucumber → Behavior-based (Gherkin)
+
+### 3. What is Scenario Outline?
+
+👉 Used for data-driven testing with Examples table.
+
+### 4. What are Hooks?
+
+👉 Pre/Post conditions using @Before & @After.
+
+### 5. What is Glue?
+
+👉 Package where step definitions are located.
+
+---
+
+# 🔹 Real-Time Usage (Say This in Interview 💡)
+
+“In my project, I used Cucumber with Selenium and TestNG. We wrote feature files for business scenarios, implemented step definitions using Page Object Model, used hooks for setup/teardown, and tags to run smoke and regression suites.”
+
+---
+
+If you want, I can also:
+✅ Convert this into **PDF for revision**
+✅ Give **top 50 Cucumber interview questions**
+✅ Provide a **complete framework structure (real project level)**
